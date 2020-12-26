@@ -1,6 +1,12 @@
+# -*- coding: utf-8 -*-
+import os
+import re
+import socket
+import subprocess
+
 from typing import List  # noqa: F401
 
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
@@ -20,6 +26,18 @@ keys = [
         desc="Move window down in current stack "),
     Key([mod, "control"], "j", lazy.layout.shuffle_up(),
         desc="Move window up in current stack "),
+
+    Key([mod], "l",
+        lazy.layout.grow(),
+        lazy.layout.increase_nmaster(),
+        desc='Expand window (MonadTall), increase number in master pane (Tile)'
+        ),
+
+    Key([mod], "h",
+        lazy.layout.shrink(),
+        lazy.layout.decrease_nmaster(),
+        desc='Shrink window (MonadTall), decrease number in master pane (Tile)'
+        ),
 
     # Switch window focus to other pane(s) of stack
     Key([mod], "space", lazy.layout.next(),
@@ -46,36 +64,52 @@ keys = [
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
 
-    Key([mod], "p", lazy.spawn("dmenu"),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "p", lazy.spawn(".config/rofi/launchers/colorful/launcher.sh"),
+        desc="Spawn rofi"),
 ]
 
-group_names = [("WWW", {'layout': 'monadtall'}),
+group_names = [("HOME", {'layout': 'monadtall'}),
                ("DEV", {'layout': 'monadtall'}),
-               ("SYS", {'layout': 'monadtall'}),
-               ("DOC", {'layout': 'monadtall'}),
-               ("VBOX", {'layout': 'monadtall'}),
-               ("CHAT", {'layout': 'monadtall'}),
-               ("MUS", {'layout': 'monadtall'}),
-               ("VID", {'layout': 'monadtall'}),
-               ("GFX", {'layout': 'floating'})]
+               ("GAMES", {'layout': 'monadtall'}),
+               ("MUSIC", {'layout': 'monadtall'})]
+
+group_keys = ["ampersand",
+              "eacute",
+              "quotedbl",
+              "apostrophe"]
 
 groups = [Group(name, **kwargs) for name, kwargs in group_names]
 
-for i, (name, kwargs) in enumerate(group_names, 1):
-    keys.append(Key([mod], str(i), lazy.group[name].toscreen()))        # Switch to another group
-    keys.append(Key([mod, "shift"], str(i), lazy.window.togroup(name))) # Send current window to another group
+for i, (name, kwargs) in enumerate(group_names, 0):
+    # Switch to another group
+    keys.append(Key([mod], group_keys[i], lazy.group[name].toscreen()))
+    # Send current window to another group
+    keys.append(Key([mod, "shift"], group_keys[i], lazy.window.togroup(name)))
 
+
+colors = [["#282c34", "#282c34"], # panel background
+          ["#434758", "#434758"], # background for current screen tab
+          ["#ffffff", "#ffffff"], # font color for group names
+          ["#ff5555", "#ff5555"], # border line color for current tab
+          ["#8d62a9", "#8d62a9"], # border line color for other tab and odd widgets
+          ["#668bd7", "#668bd7"], # color for the even widgets
+          ["#e1acff", "#e1acff"]] # window name
+
+layout_theme = {"border_width": 2,
+                "margin": 6,
+                "border_focus": "e1acff",
+                "border_normal": "1D2330"
+                }
 
 layouts = [
-    layout.Max(),
+    layout.Max(**layout_theme),
     # layout.Stack(num_stacks=2),
     # Try more layouts by unleashing below layouts.
     # layout.Bsp(),
     # layout.Columns(),
     # layout.Matrix(),
-    layout.MonadTall(),
-    # layout.MonadWide(),
+    layout.MonadTall(**layout_theme),
+    # layout.MonadWide(**layout_theme),
     # layout.RatioTile(),
     # layout.Tile(),
     # layout.TreeTab(),
@@ -84,9 +118,9 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font='sans',
+    font='Noto Sans',
     fontsize=14,
-    padding=3,
+    padding=5,
 )
 extension_defaults = widget_defaults.copy()
 
@@ -94,7 +128,23 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(
+                    disable_drag = True,
+                    margin = 5,
+                    padding = 5,
+                    borderwidth = 3,
+                    active = colors[2],
+                    inactive = colors[2],
+                    rounded = False,
+                    highlight_color = colors[1],
+                    highlight_method = "line",
+                    this_current_screen_border = colors[3],
+                    this_screen_border = colors [4],
+                    other_current_screen_border = colors[0],
+                    other_screen_border = colors[0],
+                    foreground = colors[2],
+                    background = colors[0]
+                ),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
@@ -104,14 +154,33 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.CurrentLayout(),
-                widget.Systray(),
+                widget.Systray(
+                    margin=5
+                ),
+                widget.Pacman(
+                    update_interval = 1800,
+                    foreground = colors[2],
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
+                    background = colors[4]
+                ),
+                widget.Memory(
+                    foreground = colors[2],
+                    background = colors[5],
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                    padding = 5
+                ),
+                widget.Volume(
+                    foreground = colors[2],
+                    background = colors[5],
+                    padding = 5
+                ),
                 widget.Clock(
                     padding=5,
                     format='%d %b %Y %a %H:%M',
                 ),
                 widget.QuickExit(),
             ],
-            24,
+            30,
         ),
     ),
 ]
@@ -150,6 +219,12 @@ floating_layout = layout.Floating(float_rules=[
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
+
+
+@hook.subscribe.startup_once
+def start_once():
+    home = os.path.expanduser('~')
+    subprocess.call([home + '/.config/qtile/autostart.sh'])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
