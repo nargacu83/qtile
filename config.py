@@ -3,6 +3,7 @@ import os
 import re
 import socket
 import subprocess
+import psutil
 
 from typing import List  # noqa: F401
 
@@ -12,6 +13,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
 mod = "mod4"
+alt = "mod1"
 terminal = guess_terminal()
 
 keys = [
@@ -59,19 +61,24 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
+    # Launcher with Rofi
+    Key([mod], "p", lazy.spawn(".config/rofi/launchers/colorful/launcher.sh"),
+        desc="Spawn rofi in drun mode"),
+
+    # Switch window with Rofi
+    Key([alt], "Tab", lazy.spawn(".config/rofi/launchers/colorful/window_switcher.sh"), desc="Spawn Rofi in window mode"),
+
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
 
-    Key([mod], "p", lazy.spawn(".config/rofi/launchers/colorful/launcher.sh"),
-        desc="Spawn rofi"),
 ]
 
-group_names = [("HOME", {'layout': 'monadtall'}),
-               ("DEV", {'layout': 'monadtall'}),
-               ("GAMES", {'layout': 'monadtall'}),
-               ("MUSIC", {'layout': 'monadtall'})]
+group_names = [("1", {'layout': 'monadtall'}),
+               ("2", {'layout': 'monadtall'}),
+               ("3", {'layout': 'monadtall'}),
+               ("4", {'layout': 'monadtall'})]
 
 group_keys = ["ampersand",
               "eacute",
@@ -88,7 +95,7 @@ for i, (name, kwargs) in enumerate(group_names, 0):
 
 
 colors = [["#282c34", "#282c34"], # panel background
-          ["#434758", "#434758"], # background for current screen tab
+          ["#1D2330", "#1D2330"], # background for current screen tab
           ["#ffffff", "#ffffff"], # font color for group names
           ["#ff5555", "#ff5555"], # border line color for current tab
           ["#8d62a9", "#8d62a9"], # border line color for other tab and odd widgets
@@ -137,15 +144,15 @@ screens = [
                     inactive = colors[2],
                     rounded = False,
                     highlight_color = colors[1],
-                    highlight_method = "line",
+                    highlight_method = "block",
                     this_current_screen_border = colors[3],
                     this_screen_border = colors [4],
                     other_current_screen_border = colors[0],
                     other_screen_border = colors[0],
                     foreground = colors[2],
-                    background = colors[0]
+                    # background = colors[0]
                 ),
-                widget.Prompt(),
+                # widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
@@ -154,19 +161,18 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 widget.CurrentLayout(),
-                widget.Systray(
-                    margin=5
-                ),
-                widget.Pacman(
+                widget.Systray(),
+                widget.CheckUpdates(
                     update_interval = 1800,
                     foreground = colors[2],
-                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
+                    # mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
                     background = colors[4]
                 ),
                 widget.Memory(
                     foreground = colors[2],
                     background = colors[5],
                     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                    measure_mem = 'G',
                     padding = 5
                 ),
                 widget.Volume(
@@ -178,7 +184,7 @@ screens = [
                     padding=5,
                     format='%d %b %Y %a %H:%M',
                 ),
-                widget.QuickExit(),
+                # widget.QuickExit(),
             ],
             30,
         ),
@@ -195,6 +201,14 @@ mouse = [
 ]
 
 dgroups_key_binder = None
+# Drag floating layouts.
+mouse = [
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
+         start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
+         start=lazy.window.get_size()),
+    Click([mod], "Button2", lazy.window.bring_to_front())
+]
 dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
@@ -225,6 +239,11 @@ focus_on_window_activation = "smart"
 def start_once():
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/autostart.sh'])
+
+# @hook.subscribe.shutdown
+# def stop():
+#     home = os.path.expanduser('~')
+#     subprocess.call([home + '/.config/qtile/autostop.sh'])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
