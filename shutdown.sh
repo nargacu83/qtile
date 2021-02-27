@@ -20,8 +20,19 @@ fi
 if [ -x "$(command -v xrandr)" ]; then
   redshift &
 fi
+#!/bin/bash
 
-#set ckb-next for mouse dpi and devices lights
-if [ -x "$(command -v ckb-next)" ]; then
-  ckb-next &
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+#set background
+if [ -x "$(command -v feh)" ]; then
+  feh --bg-scale $SCRIPTPATH/down.jpg
 fi
+
+echo "UnloadTheme" > $XDG_RUNTIME_DIR/leftwm/commands.pipe
+
+pkill compton 
+pkill picom 
+pkill polybar 
+pkill redshift
+pkill dunst

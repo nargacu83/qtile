@@ -62,16 +62,17 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
     # Launcher with Rofi
-    Key([mod], "p", lazy.spawn(".config/rofi/launchers/colorful/launcher.sh"),
-        desc="Spawn rofi in drun mode"),
+    Key([mod], "p", lazy.spawn(".config/rofi/launcher.sh"), desc="Spawn rofi in drun mode"),
 
     # Switch window with Rofi
-    Key([alt], "Tab", lazy.spawn(".config/rofi/launchers/colorful/window_switcher.sh"), desc="Spawn Rofi in window mode"),
+    # Key([alt], "Tab", lazy.spawn(".config/rofi/launchers/colorful/window_switcher.sh"), desc="Spawn Rofi in window mode"),
+    
+    # Disable floating window
+    Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
-    Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
+    # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
 ]
 
@@ -110,18 +111,7 @@ layout_theme = {"border_width": 2,
 
 layouts = [
     layout.Max(**layout_theme),
-    # layout.Stack(num_stacks=2),
-    # Try more layouts by unleashing below layouts.
-    # layout.Bsp(),
-    # layout.Columns(),
-    # layout.Matrix(),
     layout.MonadTall(**layout_theme),
-    # layout.MonadWide(**layout_theme),
-    # layout.RatioTile(),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
 ]
 
 widget_defaults = dict(
@@ -168,25 +158,25 @@ screens = [
                     # mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
                     background = colors[4]
                 ),
-                widget.Memory(
-                    foreground = colors[2],
-                    background = colors[5],
-                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
-                    measure_mem = 'G',
-                    padding = 5
-                ),
-                widget.Volume(
-                    foreground = colors[2],
-                    background = colors[5],
-                    padding = 5
-                ),
+                # widget.Memory(
+                #     foreground = colors[2],
+                #     background = colors[5],
+                #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                #     measure_mem = 'G',
+                #     padding = 5
+                # ),
+                # widget.Volume(
+                #     foreground = colors[2],
+                #     background = colors[5],
+                #     padding = 5
+                # ),
                 widget.Clock(
-                    padding=5,
+                    padding=10,
                     format='%d %b %Y %a %H:%M',
                 ),
                 # widget.QuickExit(),
             ],
-            30,
+            35,
         ),
     ),
 ]
@@ -201,6 +191,7 @@ mouse = [
 ]
 
 dgroups_key_binder = None
+
 # Drag floating layouts.
 mouse = [
     Drag([mod], "Button1", lazy.window.set_position_floating(),
@@ -236,14 +227,14 @@ focus_on_window_activation = "smart"
 
 
 @hook.subscribe.startup_once
-def start_once():
+def startup_once():
     home = os.path.expanduser('~')
-    subprocess.call([home + '/.config/qtile/autostart.sh'])
+    subprocess.call([home + '/.config/qtile/startup_once.sh'])
 
 # @hook.subscribe.shutdown
-# def stop():
+# def shutdown():
 #     home = os.path.expanduser('~')
-#     subprocess.call([home + '/.config/qtile/autostop.sh'])
+#     subprocess.call([home + '/.config/qtile/shutdown.sh'])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the

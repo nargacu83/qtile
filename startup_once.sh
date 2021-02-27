@@ -16,22 +16,21 @@ if [ -x "$(command -v feh)" ]; then
   feh --bg-fill $SCRIPTPATH/background.jpg
 fi
 
+#start polkit
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+
+#start notification-daemon
+if [ -x "$(command -v dunst)" ]; then
+  dunst &
+fi
+
 #set redshift for night light
 if [ -x "$(command -v xrandr)" ]; then
   redshift &
 fi
-#!/bin/bash
 
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-#set background
-if [ -x "$(command -v feh)" ]; then
-  feh --bg-scale $SCRIPTPATH/down.jpg
-fi
-
-echo "UnloadTheme" > $XDG_RUNTIME_DIR/leftwm/commands.pipe
-
-pkill compton 
-pkill picom
-pkill polybar
-pkill redshift
+#set ckb-next for mouse dpi and devices lights
+# if [ -x "$(command -v ckb-next)" ]; then
+#   ckb-next &
+# fi
