@@ -62,10 +62,10 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
     # Launcher with Rofi
-    Key([mod], "p", lazy.spawn(".config/rofi/launcher.sh"), desc="Spawn rofi in drun mode"),
+    Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
 
     # Switch window with Rofi
-    # Key([alt], "Tab", lazy.spawn(".config/rofi/launchers/colorful/window_switcher.sh"), desc="Spawn Rofi in window mode"),
+    # Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
     
     # Disable floating window
     Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
