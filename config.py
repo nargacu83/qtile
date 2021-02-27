@@ -66,6 +66,9 @@ keys = [
 
     # Switch window with Rofi
     # Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
+
+    # Power menu with Rofi
+    Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
     
     # Disable floating window
     Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
