@@ -3,7 +3,6 @@ import os
 import re
 import socket
 import subprocess
-import psutil
 
 from typing import List  # noqa: F401
 
@@ -165,17 +164,19 @@ screens = [
                 #     foreground = colors[2],
                 #     background = colors[5],
                 #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                #     format = "{MemUsed}M / {MemTotal}M",
                 #     measure_mem = 'G',
                 #     padding = 5
                 # ),
                 # widget.Volume(
                 #     foreground = colors[2],
                 #     background = colors[5],
+                #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
                 #     padding = 5
                 # ),
                 widget.Clock(
                     padding=10,
-                    format='%d %b %Y %a %H:%M',
+                    format='%a %d %b %Y %H:%M',
                 ),
                 # widget.QuickExit(),
             ],
@@ -203,6 +204,7 @@ mouse = [
          start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
+
 dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
