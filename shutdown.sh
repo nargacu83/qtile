@@ -36,3 +36,4 @@ pkill picom
 pkill polybar 
 pkill redshift
 pkill dunst
+pkill pamac-tray

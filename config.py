@@ -160,17 +160,17 @@ screens = [
                     measure_mem = 'G',
                     padding = 10
                 ),
-                widget.CheckUpdates(
-                    font = ""
-                    update_interval = 1800,
-                    distro = "Arch_checkupdates",
-                    display_format = "{updates} MAJs",
-                    foreground = colors[2],
-                    # mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
-                    # background = colors[4],
-                    padding = 10
+                # widget.CheckUpdates(
+                #     update_interval = 1800,
+                #     distro = "Arch_checkupdates",
+                #     display_format = "{updates} MAJs",
+                #     foreground = colors[2],
+                #     # background = colors[4],
+                #     padding = 10
+                # ),
+                widget.Systray(
+                    padding=10
                 ),
-                widget.Systray(),
                 widget.CurrentLayout(),
                 widget.Clock(
                     format='%a %d %b %Y   %H:%M',

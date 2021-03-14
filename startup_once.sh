@@ -25,8 +25,13 @@ if [ -x "$(command -v dunst)" ]; then
 fi
 
 #set redshift for night light
-if [ -x "$(command -v xrandr)" ]; then
+if [ -x "$(command -v redshift)" ]; then
   redshift &
+fi
+
+#start pamac-tray
+if [ -x "$(command -v pamac-tray)" ]; then
+  pamac-tray &
 fi
 
 
