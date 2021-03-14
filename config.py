@@ -152,32 +152,38 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                widget.CurrentLayout(),
-                widget.Systray(),
+                widget.Memory(
+                    foreground = colors[2],
+                    # background = colors[5],
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                    format = "{MemUsed}M / {MemTotal}M",
+                    measure_mem = 'G',
+                    padding = 10
+                ),
                 widget.CheckUpdates(
+                    font = ""
                     update_interval = 1800,
+                    distro = "Arch_checkupdates",
+                    display_format = "{updates} MAJs",
                     foreground = colors[2],
                     # mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e sudo pacman -Syu')},
-                    background = colors[4]
+                    # background = colors[4],
+                    padding = 10
                 ),
-                # widget.Memory(
-                #     foreground = colors[2],
-                #     background = colors[5],
-                #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
-                #     format = "{MemUsed}M / {MemTotal}M",
-                #     measure_mem = 'G',
-                #     padding = 5
-                # ),
+                widget.Systray(),
+                widget.CurrentLayout(),
+                widget.Clock(
+                    format='%a %d %b %Y   %H:%M',
+                    foreground = colors[2],
+                    # background = colors[4],
+                    padding=10
+                ),
                 # widget.Volume(
                 #     foreground = colors[2],
                 #     background = colors[5],
                 #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
                 #     padding = 5
                 # ),
-                widget.Clock(
-                    padding=10,
-                    format='%a %d %b %Y %H:%M',
-                ),
                 # widget.QuickExit(),
             ],
             35,
@@ -211,23 +217,25 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 
-floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
-    {'wmclass': 'confirm'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'confirmreset'},  # gitk
-    {'wmclass': 'makebranch'},  # gitk
-    {'wmclass': 'maketag'},  # gitk
-    {'wname': 'branchdialog'},  # gitk
-    {'wname': 'pinentry'},  # GPG key password entry
-    {'wmclass': 'ssh-askpass'},  # ssh-askpass
-], **layout_theme)
+floating_layout = layout.Floating(
+    # float_rules=[
+    #     # Run the utility of `xprop` to see the wm class and name of an X client.
+    #     {'wmclass': 'confirm'},
+    #     {'wmclass': 'dialog'},
+    #     {'wmclass': 'download'},
+    #     {'wmclass': 'error'},
+    #     {'wmclass': 'file_progress'},
+    #     {'wmclass': 'notification'},
+    #     {'wmclass': 'splash'},
+    #     {'wmclass': 'toolbar'},
+    #     {'wmclass': 'confirmreset'},  # gitk
+    #     {'wmclass': 'makebranch'},  # gitk
+    #     {'wmclass': 'maketag'},  # gitk
+    #     {'wname': 'branchdialog'},  # gitk
+    #     {'wname': 'pinentry'},  # GPG key password entry
+    #     {'wmclass': 'ssh-askpass'},  # ssh-askpass
+    # ],
+    **layout_theme)
 
 auto_fullscreen = True
 focus_on_window_activation = "smart"
