@@ -60,11 +60,14 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
+    # Launch file manager
+    Key([mod], "e", lazy.spawn("nautilus"), desc="Spawn nautilus"),
+    
     # Launcher with Rofi
     Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
 
     # Switch window with Rofi
-    # Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
+    Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
 
     # Power menu with Rofi
     Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
