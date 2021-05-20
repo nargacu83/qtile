@@ -13,7 +13,7 @@ fi
 
 #set background
 if [ -x "$(command -v feh)" ]; then
-  feh --bg-fill $SCRIPTPATH/background.jpg
+  feh --bg-fill $HOME/.config/wallpaper/background.jpg
 fi
 
 #start polkit
