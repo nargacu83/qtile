@@ -69,6 +69,9 @@ keys = [
     # Switch window with Rofi
     Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
 
+    # Screenshot with Rofi
+    Key([mod], "Print", lazy.spawn(os.path.expanduser('~') + "/.config/rofi/screenshot"), desc="Spawn screenshot menu with Rofi"),
+
     # Power menu with Rofi
     Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
     
@@ -160,7 +163,7 @@ screens = [
                     # background = colors[5],
                     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
                     format = "{MemUsed}M / {MemTotal}M",
-                    measure_mem = 'G',
+                    measure_mem = 'M',
                     padding = 10
                 ),
                 # widget.CheckUpdates(
