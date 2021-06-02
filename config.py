@@ -166,16 +166,20 @@ screens = [
                     measure_mem = 'M',
                     padding = 10
                 ),
-                # widget.CheckUpdates(
-                #     update_interval = 1800,
-                #     distro = "Arch_checkupdates",
-                #     display_format = "{updates} MAJs",
-                #     foreground = colors[2],
-                #     # background = colors[4],
-                #     padding = 10
-                # ),
+                widget.CheckUpdates(
+                    update_interval = 1800,
+                    distro = "Arch_checkupdates",
+                    display_format = "{updates} MAJs",
+                    foreground = colors[2],
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e paru -Syu')},
+                    background = colors[4]
+                ),
                 widget.Systray(
                     padding=10
+                ),
+                widget.Sep(
+                    linewidth = 0,
+                    padding = 6
                 ),
                 widget.CurrentLayout(
                     padding=10
