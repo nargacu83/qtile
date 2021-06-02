@@ -109,7 +109,7 @@ colors = [["#282c34", "#282c34"], # panel background
           ["#ff5555", "#ff5555"], # border line color for current tab
           ["#8d62a9", "#8d62a9"], # border line color for other tab and odd widgets
           ["#668bd7", "#668bd7"], # color for the even widgets
-          ["#e1acff", "#e1acff"]] # window name
+          ["#e1acff", "#e1acff"]] # window name 
 
 layout_theme = {"border_width": 2,
                 "margin": 6,
@@ -120,6 +120,7 @@ layout_theme = {"border_width": 2,
 layouts = [
     layout.Max(**layout_theme),
     layout.MonadTall(**layout_theme),
+    #layout.Columns(**layout_theme)
 ]
 
 widget_defaults = dict(
@@ -139,7 +140,7 @@ screens = [
                     padding = 5,
                     borderwidth = 3,
                     active = colors[2],
-                    inactive = colors[2],
+                    inactive = colors[0],
                     rounded = False,
                     highlight_color = colors[1],
                     highlight_method = "block",
