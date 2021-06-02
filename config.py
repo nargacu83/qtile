@@ -160,7 +160,7 @@ screens = [
                 widget.Memory(
                     foreground = colors[2],
                     # background = colors[5],
-                    mouse_callbacks = {'Button1': lazy.spawncmd(terminal + ' -e htop')},
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.spawncmd(terminal + ' -e htop')},
                     format = "{MemUsed}M / {MemTotal}M",
                     measure_mem = "M",
                     padding = 10
@@ -170,7 +170,7 @@ screens = [
                     distro = "Arch_checkupdates",
                     display_format = "{updates} MAJs",
                     foreground = colors[2],
-                    mouse_callbacks = {'Button1': lazy.spawncmd(terminal + ' -e paru -Syu')},
+                    mouse_callbacks = {'Button1': lambda qtile: qtile.spawncmd(terminal + ' -e paru -Syu')},
                     background = colors[4]
                 ),
                 widget.Systray(
