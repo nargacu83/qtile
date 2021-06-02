@@ -84,9 +84,9 @@ keys = [
 
 ]
 
-group_names = [("1", {'layout': 'monadtall'}),
-               ("2", {'layout': 'monadtall'}),
-               ("3", {'layout': 'monadtall'}),
+group_names = [("1", {'layout': 'monadtall', 'matches': [Match(wm_class=["steam", "lutris", "freetube"])]}),
+               ("2", {'layout': 'monadtall', 'matches': [Match(wm_class=["vscodium", "emacs", "jetbrains-rider", "godot", "unityhub", "Unity"])]}),
+               ("3", {'layout': 'monadtall', 'matches': [Match(wm_class=["discord", "element", "pulseeffects"])]}),
                ("4", {'layout': 'monadtall'})]
 
 group_keys = ["ampersand",
@@ -150,7 +150,6 @@ screens = [
                     foreground = colors[2],
                     # background = colors[0]
                 ),
-                # widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
@@ -161,9 +160,9 @@ screens = [
                 widget.Memory(
                     foreground = colors[2],
                     # background = colors[5],
-                    mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
+                    mouse_callbacks = {'Button1': lazy.spawncmd(terminal + ' -e htop')},
                     format = "{MemUsed}M / {MemTotal}M",
-                    measure_mem = 'M',
+                    measure_mem = "M",
                     padding = 10
                 ),
                 widget.CheckUpdates(
@@ -171,7 +170,7 @@ screens = [
                     distro = "Arch_checkupdates",
                     display_format = "{updates} MAJs",
                     foreground = colors[2],
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e paru -Syu')},
+                    mouse_callbacks = {'Button1': lazy.spawncmd(terminal + ' -e paru -Syu')},
                     background = colors[4]
                 ),
                 widget.Systray(
@@ -187,16 +186,8 @@ screens = [
                 widget.Clock(
                     format='%a %d %b %Y   %H:%M',
                     foreground = colors[2],
-                    # background = colors[4],
                     padding=10
                 ),
-                # widget.Volume(
-                #     foreground = colors[2],
-                #     background = colors[5],
-                #     mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(guess_terminal() + ' -e htop')},
-                #     padding = 5
-                # ),
-                # widget.QuickExit(),
             ],
             35,
         ),
@@ -211,23 +202,36 @@ mouse = [
          start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
-
+# A function which generates group binding hotkeys. It takes a single argument, the DGroups object, and can use that to set up dynamic key bindings.
 dgroups_key_binder = None
 
-# Drag floating layouts.
-mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-         start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-         start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front())
-]
+# A list of Rule objects which can send windows to various groups based on matching criteria.
+dgroups_app_rules = []
 
-dgroups_app_rules = []  # type: List
-main = None  # WARNING: this is deprecated and will be removed soon
+# Controls whether or not to automatically reconfigure screens when there are changes in randr output configuration.
+reconfigure_screens = True
+
+# Controls whether or not focus follows the mouse around as it moves across windows in a layout.
 follow_mouse_focus = False
-bring_front_click = False
+
+# When clicked, should the window be brought to the front or not. If this is set to “floating_only”, only floating windows will get affected (This sets the X Stack Mode to Above.)
+bring_front_click = True
+
+# If true, the cursor follows the focus as directed by the keyboard, warping to the center of the focused window. When switching focus between screens, If there are no windows in the screen, the cursor will warp to the center of the screen.
 cursor_warp = False
+
+# If a window requests to be fullscreen, it is automatically fullscreened. Set this to false if you only want windows to be fullscreen if you ask them to be.
+auto_fullscreen = True
+
+# If things like steam games want to auto-minimize themselves when losing focus, should we respect this or not?
+auto_minimize = False
+
+# Behavior of the _NET_ACTIVATE_WINDOW message sent by applications
+# urgent: urgent flag is set for the window 
+# focus: automatically focus the window 
+# smart: automatically focus if the window is in the current group 
+# never: never automatically focus any window that requests it
+focus_on_window_activation = "smart"
 
 floating_layout = layout.Floating(
     float_rules=[
@@ -235,6 +239,7 @@ floating_layout = layout.Floating(
         # default_float_rules include: utility, notification, toolbar, splash, dialog,
         # file_progress, confirm, download and error.
         *layout.Floating.default_float_rules,
+        Match(wm_class='pavucontrol'),     # pavucontrol
         Match(wm_class='kdenlive'),       # kdenlive
         Match(wm_class='pinentry-gtk-2'), # GPG key password entry
         
@@ -243,10 +248,6 @@ floating_layout = layout.Floating(
         # Match(title='UnityEditor.AddComponent.AddComponentWindow'),
     ],
     **layout_theme)
-
-auto_fullscreen = True
-focus_on_window_activation = "smart"
-
 
 @hook.subscribe.startup_once
 def startup_once():
