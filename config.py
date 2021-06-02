@@ -85,7 +85,7 @@ keys = [
 ]
 
 group_names = [("1", {'layout': 'monadtall', 'matches': [Match(wm_class=["steam", "lutris", "freetube"])]}),
-               ("2", {'layout': 'monadtall', 'matches': [Match(wm_class=["vscodium", "emacs", "jetbrains-rider", "godot", "unityhub", "Unity"])]}),
+               ("2", {'layout': 'monadtall', 'matches': [Match(wm_class=["vscodium", "emacs", "jetbrains-rider", "Godot", "unityhub", "Unity"])]}),
                ("3", {'layout': 'monadtall', 'matches': [Match(wm_class=["discord", "element", "pulseeffects"])]}),
                ("4", {'layout': 'monadtall'})]
 
