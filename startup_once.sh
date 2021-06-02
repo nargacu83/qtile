@@ -30,9 +30,9 @@ if [ -x "$(command -v redshift)" ]; then
 fi
 
 #start pamac-tray
-if [ -x "$(command -v pamac-tray)" ]; then
-  pamac-tray &
-fi
+# if [ -x "$(command -v pamac-tray)" ]; then
+#   pamac-tray &
+# fi
 
 
 #set ckb-next for mouse dpi and devices lights
