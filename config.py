@@ -216,7 +216,7 @@ reconfigure_screens = True
 follow_mouse_focus = False
 
 # When clicked, should the window be brought to the front or not. If this is set to “floating_only”, only floating windows will get affected (This sets the X Stack Mode to Above.)
-bring_front_click = True
+bring_front_click = False
 
 # If true, the cursor follows the focus as directed by the keyboard, warping to the center of the focused window. When switching focus between screens, If there are no windows in the screen, the cursor will warp to the center of the screen.
 cursor_warp = False
