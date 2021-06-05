@@ -61,7 +61,7 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
     # Launch file manager
-    Key([mod], "e", lazy.spawn("nautilus"), desc="Spawn nautilus"),
+    Key([mod], "e", lazy.spawn("thunar"), desc="Spawn file manager"),
     
     # Launcher with Rofi
     Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
