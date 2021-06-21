@@ -61,7 +61,7 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
     # Launch file manager
-    Key([mod], "e", lazy.spawn("thunar"), desc="Spawn file manager"),
+    Key([mod], "e", lazy.spawn("pcmanfm"), desc="Spawn file manager"),
     
     # Launcher with Rofi
     Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
@@ -84,9 +84,9 @@ keys = [
 
 ]
 
-group_names = [("1", {'layout': 'monadtall', 'matches': [Match(wm_class=["steam", "lutris", "freetube"])]}),
-               ("2", {'layout': 'monadtall', 'matches': [Match(wm_class=["vscodium", "emacs", "jetbrains-rider", "Godot", "unityhub", "Unity"])]}),
-               ("3", {'layout': 'monadtall', 'matches': [Match(wm_class=["discord", "element", "pulseeffects"])]}),
+group_names = [("1", {'layout': 'monadtall', 'matches': [Match(wm_class=["freetube"])]}),
+               ("2", {'layout': 'monadtall', 'matches': [Match(wm_class=["vscodium", "jetbrains-rider", "unityhub", "Unity"])]}),
+               ("3", {'layout': 'monadtall', 'matches': [Match(wm_class=["discord", "element"])]}),
                ("4", {'layout': 'monadtall'})]
 
 group_keys = ["ampersand",
@@ -120,7 +120,6 @@ layout_theme = {"border_width": 2,
 layouts = [
     layout.Max(**layout_theme),
     layout.MonadTall(**layout_theme),
-    #layout.Columns(**layout_theme)
 ]
 
 widget_defaults = dict(
@@ -240,9 +239,10 @@ floating_layout = layout.Floating(
         # default_float_rules include: utility, notification, toolbar, splash, dialog,
         # file_progress, confirm, download and error.
         *layout.Floating.default_float_rules,
-        Match(wm_class='pavucontrol'),     # pavucontrol
-        Match(wm_class='kdenlive'),       # kdenlive
+        Match(wm_class='pavucontrol'),
+        Match(wm_class='kdenlive'),
         Match(wm_class='pinentry-gtk-2'), # GPG key password entry
+        Match(wm_class='Tor Browser'),
         
         # Rules for Unity (bugged for the moment)
         # Match(title='UnityEditor.PopupWindow'),
