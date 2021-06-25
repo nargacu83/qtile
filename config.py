@@ -243,6 +243,7 @@ floating_layout = layout.Floating(
         Match(wm_class='kdenlive'),
         Match(wm_class='pinentry-gtk-2'), # GPG key password entry
         Match(wm_class='Tor Browser'),
+        Match(wm_class='origin.exe'),
         
         # Rules for Unity (bugged for the moment)
         # Match(title='UnityEditor.PopupWindow'),
