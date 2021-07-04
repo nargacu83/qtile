@@ -24,6 +24,11 @@ if [ -x "$(command -v dunst)" ]; then
   dunst &
 fi
 
+# start file manager daemon
+if [ -x "$(command -v pcmanfm)" ]; then
+  pcmanfm -d &
+fi
+
 #set redshift for night light
 if [ -x "$(command -v redshift)" ]; then
   redshift &
