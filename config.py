@@ -161,7 +161,7 @@ screens = [
                     foreground = colors[2],
                     # background = colors[5],
                     mouse_callbacks = {'Button1': lambda qtile: qtile.spawncmd(terminal + ' -e htop')},
-                    format = "{MemUsed}M / {MemTotal}M",
+                    format = "{MemUsed: .0f}M / {MemTotal: .0f}M",
                     measure_mem = "M",
                     padding = 10
                 ),
