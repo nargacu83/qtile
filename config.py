@@ -180,9 +180,6 @@ screens = [
                     linewidth = 0,
                     padding = 6
                 ),
-                widget.CurrentLayout(
-                    padding=10
-                ),
                 widget.Clock(
                     format='%a %d %b %Y   %H:%M',
                     foreground = colors[2],
