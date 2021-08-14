@@ -61,7 +61,7 @@ keys = [
     Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
 
     # Launch file manager
-    Key([mod], "e", lazy.spawn("pcmanfm"), desc="Spawn file manager"),
+    Key([mod], "e", lazy.spawn("nemo"), desc="Spawn file manager"),
     
     # Launcher with Rofi
     Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
@@ -230,12 +230,31 @@ auto_minimize = False
 # never: never automatically focus any window that requests it
 focus_on_window_activation = "smart"
 
+default_float_rules = [
+    Match(wm_type='utility'),
+    Match(wm_type='notification'),
+    Match(wm_type='toolbar'),
+    Match(wm_type='splash'),
+    Match(wm_type='dialog'),
+    Match(wm_class='file_progress'),
+    Match(wm_class='confirm'),
+    Match(wm_class='dialog'),
+    Match(wm_class='download'),
+    Match(wm_class='error'),
+    Match(wm_class='notification'),
+    Match(wm_class='splash'),
+    Match(wm_class='toolbar'),
+    Match(func=lambda c: c.has_fixed_size())
+    # Match(func=lambda c: c.has_fixed_ratio())
+]
+
+
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
         # default_float_rules include: utility, notification, toolbar, splash, dialog,
         # file_progress, confirm, download and error.
-        *layout.Floating.default_float_rules,
+        *default_float_rules,
         Match(wm_class='pavucontrol'),
         Match(wm_class='kdenlive'),
         Match(wm_class='pinentry-gtk-2'), # GPG key password entry
