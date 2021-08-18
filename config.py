@@ -64,16 +64,16 @@ keys = [
     Key([mod], "e", lazy.spawn("pcmanfm"), desc="Spawn file manager"),
     
     # Launcher with Rofi
-    Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun -theme ~/.config/rofi/style_nargou"), desc="Spawn rofi in drun mode"),
+    Key([mod], "p", lazy.spawn("rofi -no-lazy-grab -show drun -modi drun"), desc="Spawn rofi in drun mode"),
 
     # Switch window with Rofi
-    Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
+    Key([alt], "Tab", lazy.spawn("rofi -no-lazy-grab -show window -modi window"), desc="Spawn Rofi in window mode"),
 
     # Screenshot with Rofi
-    Key([mod], "Print", lazy.spawn(os.path.expanduser('~') + "/.config/rofi/screenshot"), desc="Spawn screenshot menu with Rofi"),
+    Key([mod], "Print", lazy.spawn(os.path.expanduser('~') + "/.config/rofi/scripts/screenshot.sh"), desc="Spawn screenshot menu with Rofi"),
 
     # Power menu with Rofi
-    Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/rofi-power-menu/rofi-power-menu -theme ~/.config/rofi/style_nargou"), desc="Spawn Rofi in window mode"),
+    Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/scripts/rofi-power-menu/rofi-power-menu"), desc="Spawn Rofi in window mode"),
     
     # Disable floating window
     Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
