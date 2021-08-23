@@ -48,12 +48,6 @@ keys = [
     Key([mod, "shift"], "space", lazy.layout.rotate(),
         desc="Swap panes of split stack"),
 
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
@@ -73,15 +67,13 @@ keys = [
     Key([mod], "Print", lazy.spawn(os.path.expanduser('~') + "/.config/rofi/scripts/screenshot.sh"), desc="Spawn screenshot menu with Rofi"),
 
     # Power menu with Rofi
-    Key([mod, "control"], "Escape", lazy.spawn("rofi -no-lazy-grab -show power-menu -modi power-menu:~/.config/rofi/scripts/rofi-power-menu/rofi-power-menu"), desc="Spawn Rofi in window mode"),
+    Key([mod, "control"], "Escape", lazy.spawn(os.path.expanduser('~') + "/.config/rofi/scripts/powermenu.sh"), desc="Spawn Rofi in window mode"),
     
     # Disable floating window
     Key([mod], "f", lazy.window.toggle_floating(), desc="Toggle floating window"),
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
-    # Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-
 ]
 
 group_names = [("1", {'layout': 'monadtall', 'matches': [Match(wm_class=["freetube"])]}),
@@ -111,11 +103,13 @@ colors = [["#282c34", "#282c34"], # panel background
           ["#668bd7", "#668bd7"], # color for the even widgets
           ["#e1acff", "#e1acff"]] # window name 
 
-layout_theme = {"border_width": 2,
-                "margin": 6,
-                "border_focus": "e1acff",
-                "border_normal": "1D2330"
-                }
+layout_theme = {
+    "new_client_position": "top",
+    "border_width": 2,
+    "margin": 6,
+    "border_focus": "e1acff",
+    "border_normal": "1D2330"
+}
 
 layouts = [
     layout.Max(**layout_theme),
